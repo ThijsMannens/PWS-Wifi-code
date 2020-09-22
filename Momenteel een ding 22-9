@@ -1,0 +1,63 @@
+#include <ESP8266WiFi.h>
+
+void    ledInit() { pinMode(LED_BUILTIN, OUTPUT); }
+boolean ledIsOn() { return (digitalRead(LED_BUILTIN) == LOW); }
+void    ledOff()  { digitalWrite(LED_BUILTIN, HIGH); }
+void    ledOn()   { digitalWrite(LED_BUILTIN, LOW); }
+void    ledFlip() { ledIsOn() ? ledOff() : ledOn(); }
+
+//SSID of your network
+char ssid[] = "Linksys01144";
+//password of your WPA Network
+char pass[] = "3nn8dkqqpy";
+
+
+const int ledPin = 16; 
+const int ledPin2 = 5;
+const int ledPin3 = 4;
+
+void setup() {
+
+
+  Serial.begin(115200);
+  Serial.println("ESP8266 WiFi Signal Strength Checker And Applier");
+
+  // Set WiFi to station mode and disconnect from an AP if it was previously connected
+  WiFi.mode(WIFI_STA);
+  WiFi.disconnect();
+  delay(10);
+
+  WiFi.begin(ssid, pass);
+  Serial.print("Connecting...");
+
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+    ledFlip();
+  }
+
+  // if you are connected, print out info about the connection:
+  Serial.print("\nConnected to: ");
+  Serial.println(ssid);
+  Serial.print("IP address: ");
+  Serial.println(WiFi.localIP());
+  Serial.println("");
+
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+
+long rssi = WiFi.RSSI();
+Serial.print("RSSI: ");
+int trilsterkte = map(rssi,-100,0,0,1023);
+int trilsterkte2 = map(rssi,-66,0,0,1023);
+int trilsterkte3 = map(rssi,-33,0,0,1023);
+analogWrite(ledPin, trilsterkte);
+analogWrite(ledPin2, trilsterkte2);
+analogWrite(ledPin3, trilsterkte3);
+Serial.println(rssi);
+Serial.println(trilsterkte);
+
+delay(500);
+}
