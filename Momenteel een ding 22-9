@@ -7,9 +7,9 @@ void    ledOn()   { digitalWrite(LED_BUILTIN, LOW); }
 void    ledFlip() { ledIsOn() ? ledOff() : ledOn(); }
 
 //SSID of your network
-char ssid[] = "Linksys01144";
+char ssid[] = "SSID";
 //password of your WPA Network
-char pass[] = "3nn8dkqqpy";
+char pass[] = "Password";
 
 
 const int ledPin = 16; 
